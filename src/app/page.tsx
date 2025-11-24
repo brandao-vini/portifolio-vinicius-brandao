@@ -1,6 +1,5 @@
 // src/app/page.tsx
 import Image from 'next/image';
-import ThemeSwitch from '@/components/ThemeSwitch';
 
 export default function HomePage() {
   return (
@@ -20,7 +19,7 @@ export default function HomePage() {
         </ul>
 
         {/* 2. Botão de Switch de Tema */}
-        <ThemeSwitch />
+       
       </nav>
 
       {/* 1. SEÇÃO DE INTRODUÇÃO / HERO */}
