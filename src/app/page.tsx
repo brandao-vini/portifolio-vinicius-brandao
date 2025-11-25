@@ -1,200 +1,211 @@
-// src/app/page.tsx
+'use client'; // Necessário para interatividade (botões, links, scroll)
+
 import Image from 'next/image';
+import { useState } from 'react';
+// Se quiser ícones reais depois, instale: npm install react-icons
+// import { FaGithub, FaLinkedin, FaInstagram, FaHtml5, FaCss3, FaJs, FaReact } from 'react-icons/fa';
+
+// --- 1. DADOS SEPARADOS (Fácil de editar!) ---
+const projects = [
+  {
+    title: "Escrita Livre (P5.js)",
+    desc: "Plataforma de desenho criativo e interativo utilizando a biblioteca gráfica P5.js.",
+    tags: ["JavaScript", "Canvas", "Criatividade"],
+    img: "/projeto-p5js.jpg",
+    link: "https://vinizinhoo.github.io/js-escritalivre/"
+  },
+  {
+    title: "Flashcards Quiz",
+    desc: "Jogo de perguntas e respostas para testar conhecimentos de forma dinâmica.",
+    tags: ["HTML", "CSS", "Lógica JS"],
+    img: "/projeto-flashcards.jpg",
+    link: "https://vinizinhoo.github.io/flashcards/"
+  },
+  {
+    title: "AluraPlus",
+    desc: "Landing page responsiva demonstrando planos e combos de assinatura.",
+    tags: ["Frontend", "Responsividade", "CSS Grid"],
+    img: "/projeto-aluraplus.jpg",
+    link: "https://vinizinhoo.github.io/alura-plus/"
+  }
+];
+
+const skills = [
+  { name: "HTML5", color: "text-orange-600" },
+  { name: "CSS3", color: "text-blue-600" },
+  { name: "JavaScript", color: "text-yellow-500" },
+  { name: "TypeScript", color: "text-blue-700" },
+  { name: "React / Next.js", color: "text-cyan-500" },
+  { name: "Tailwind CSS", color: "text-teal-500" },
+];
 
 export default function HomePage() {
+  // Lógica simples para scroll suave
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    // Container principal: dark:bg-gray-900 e dark:text-gray-100 aplicados
-    <main className="min-h-screen bg-gray-50 text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100">
+    <main className="min-h-screen bg-gray-50 text-gray-800 font-sans dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
 
-      {/* Navbar / Header */}
-      <nav className="bg-white shadow-sm py-4 px-8 md:px-16 flex justify-between items-center border-b border-gray-100 dark:bg-gray-950 dark:border-gray-700">
-
-        {/* Adicionado um espaço placeholder à esquerda para alinhar */}
-        <div className="w-10"></div>
-
-        <ul className="flex space-x-8">
-          <li><a href="#sobre" className="text-gray-600 hover:text-blue-600 transition duration-300 dark:text-gray-300 dark:hover:text-blue-400">Sobre Mim</a></li>
-          <li><a href="#projetos" className="text-gray-600 hover:text-blue-600 transition duration-300 dark:text-gray-300 dark:hover:text-blue-400">Projetos</a></li>
-          <li><a href="#contato" className="text-gray-600 hover:text-blue-600 transition duration-300 dark:text-gray-300 dark:hover:text-blue-400">Contato</a></li>
-        </ul>
-
-        {/* 2. Botão de Switch de Tema */}
-       
+      {/* --- NAVBAR FLUTUANTE (Melhoria Visual) --- */}
+      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 dark:bg-gray-950/80 dark:border-gray-800">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <span className="font-bold text-xl tracking-tighter text-blue-600 dark:text-blue-400">VB.</span>
+          
+          <ul className="flex space-x-6 text-sm font-medium">
+            {['Sobre', 'Projetos', 'Contato'].map((item) => (
+              <li key={item}>
+                <a 
+                  href={`#${item.toLowerCase()}`} 
+                  onClick={(e) => handleScroll(e, item.toLowerCase())}
+                  className="hover:text-blue-600 transition dark:hover:text-blue-400"
+                >
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </nav>
 
-      {/* 1. SEÇÃO DE INTRODUÇÃO / HERO */}
-      <section className="text-center py-20 px-4 md:px-8 bg-white shadow-md rounded-lg max-w-4xl mx-auto my-12 dark:bg-gray-800 dark:shadow-xl">
-        <Image
-          src="/vini.jpg"
-          alt="Foto do Desenvolvedor"
-          width={180}
-          height={180}
-          className="rounded-full mx-auto mb-6 border-4 border-gray-100 shadow-md dark:border-gray-700"
-        />
-        <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight dark:text-white">Olá, eu sou Vinícius Brandão 👋</h1>
-        <p className="text-xl md:text-2xl mt-4 text-gray-600 max-w-2xl mx-auto dark:text-gray-400">Desenvolvedor Front-end | Apaixonado por Tecnologia!</p>
-        <a
-          href="#projetos"
-          className="mt-8 inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg 
-              hover:bg-blue-700 hover:shadow-xl transition duration-300 transform hover:-translate-y-1 dark:shadow-blue-900/50"
-        >
-          Explorar Meus Projetos
-        </a>
-      </section>
+      {/* --- HERO SECTION --- */}
+      <section className="pt-32 pb-20 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+          <div className="relative w-40 h-40 mx-auto mb-8">
+            <Image
+              src="/vini.jpg" // Certifique-se que essa imagem existe em /public
+              alt="Vinícius Brandão"
+              fill
+              className="rounded-full object-cover border-4 border-white shadow-xl dark:border-gray-800"
+            />
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-gray-900 dark:text-white">
+            Vinícius Brandão
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto mb-10 dark:text-gray-400">
+            Transformando ideias em experiências digitais com <span className="text-blue-600 font-bold">Código & Design</span>.
+          </p>
 
-      {/* 2. SEÇÃO SOBRE MIM */}
-      <section id="sobre" className="w-full max-w-4xl mx-auto py-16 px-4 md:px-8 bg-white shadow-md rounded-lg mb-12 dark:bg-gray-800 dark:shadow-xl">
-        <h2 className="text-4xl font-bold text-gray-800 mb-8 text-center dark:text-white">Sobre Mim</h2>
-        <div className="prose lg:prose-xl text-gray-700 leading-relaxed space-y-4 dark:text-gray-300">
-          <p>
-            Sou Vinícius Brandão, desenvolvedor em formação com foco em soluções web e mobile.
-          </p>
-          <p>
-            Atualmente curso Desenvolvimento de Sistemas na ETEC Camargo Aranha, onde venho aprimorando minhas habilidades em lógica de programação, desenvolvimento front-end e integração de aplicações.
-          </p>
-          <p>
-            Tenho experiência prática com HTML, CSS, JavaScript e TypeScript, além de utilizar PHP e Blade em projetos que exigem estrutura de backend e templating dinâmico.
-          </p>
-          <p>
-            Busco constantemente evoluir como profissional, aplicando boas práticas de código, design responsivo e usabilidade em cada projeto. Meu objetivo é criar interfaces <strong className="text-blue-600 font-semibold dark:text-blue-400">modernas, funcionais e de alto desempenho</strong>, que ofereçam experiências digitais de qualidade para os usuários.
-          </p>
+          <div className="flex justify-center gap-4">
+            <a
+              href="#projetos"
+              onClick={(e) => handleScroll(e, 'projetos')}
+              className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 hover:-translate-y-1 transition transform"
+            >
+              Ver Projetos
+            </a>
+            <a
+              href="https://github.com/brandao-vini"
+              target="_blank"
+              className="px-8 py-3 bg-gray-200 text-gray-800 font-semibold rounded-full hover:bg-gray-300 transition dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+            >
+              GitHub
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* 3. SEÇÃO DE PROJETOS */}
-      <section id="projetos" className="w-full max-w-4xl mx-auto py-16 px-4 md:px-8 bg-white shadow-md rounded-lg mb-12 dark:bg-gray-800 dark:shadow-xl">
-        <h2 className="text-4xl font-bold text-gray-800 mb-8 text-center dark:text-white">Meus Projetos</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-          {/* Card de Projeto 1 (P5js) */}
-          <div className="border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition duration-300 p-6 flex flex-col dark:border-gray-700 dark:bg-gray-900">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-3 dark:text-white">Pequeno projeto interativo com JavaScript no P5js.</h3>
-            <Image
-              src="/projeto-p5js.jpg"
-              alt="Miniatura do Projeto Interativo com P5js"
-              width={400}
-              height={250}
-              className="rounded-md mb-4 object-cover"
-            />
-            <p className="text-gray-600 flex-grow mb-4 dark:text-gray-400">
-              O projeto permite que os usuários desenhem livremente na tela, explorando a criatividade por meio de JavaScript. Com um ambiente dinâmico e intuitivo, ele oferece uma experiência envolvente.
-            </p>
-            <div className="mt-auto flex justify-between items-center">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">JavaScript</span>
-              <a
-                href="https://vinizinhoo.github.io/js-escritalivre/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 transition duration-300 font-semibold dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                Ver Projeto &rarr;
-              </a>
+      {/* --- SOBRE & SKILLS (Melhoria: Layout Grid) --- */}
+      <section id="sobre" className="py-20 bg-white dark:bg-gray-800">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            
+            {/* Texto */}
+            <div>
+              <h2 className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">Sobre Mim</h2>
+              <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 mb-4">
+                Sou estudante de Desenvolvimento de Sistemas na ETEC Camargo Aranha. Minha paixão é criar interfaces que não são apenas funcionais, mas visualmente impactantes.
+              </p>
+              <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+                Atualmente, foco em aprofundar meus conhecimentos no ecossistema <strong>React, Next.js e TypeScript</strong>, buscando sempre as melhores práticas de Clean Code e UI/UX.
+              </p>
             </div>
-          </div>
 
-          {/* Card de Projeto 2 (Flashcards) */}
-          <div className="border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition duration-300 p-6 flex flex-col dark:border-gray-700 dark:bg-gray-900">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-3 dark:text-white">Flashcards: Um pequeno jogo de Quiz interativo</h3>
-            <Image
-              src="/projeto-flashcards.jpg"
-              alt="Miniatura do Flashcards"
-              width={400}
-              height={250}
-              className="rounded-md mb-4 object-cover"
-            />
-            <p className="text-gray-600 flex-grow mb-4 dark:text-gray-400">
-              O Flashcards é um jogo de quiz interativo criado com HTML, CSS e JavaScript, permitindo que usuários testem seus conhecimentos através de cartões digitais.
-            </p>
-            <div className="mt-auto flex justify-between items-center">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">HTML, CSS, JavaScript</span>
-              <a
-                href="https://vinizinhoo.github.io/flashcards/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 transition duration-300 font-semibold dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                Ver Projeto &rarr;
-              </a>
+            {/* Skills (Visual Novo) */}
+            <div className="bg-gray-50 p-8 rounded-2xl shadow-sm dark:bg-gray-900">
+              <h3 className="font-bold text-xl mb-6 text-gray-800 dark:text-white">Habilidades</h3>
+              <div className="flex flex-wrap gap-3">
+                {skills.map((skill) => (
+                  <span 
+                    key={skill.name} 
+                    className={`px-4 py-2 rounded-lg bg-white border border-gray-200 font-medium text-sm shadow-sm ${skill.color} dark:bg-gray-800 dark:border-gray-700`}
+                  >
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Card de Projeto 3 (AluraPlus) */}
-          <div className="border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition duration-300 p-6 flex flex-col dark:border-gray-700 dark:bg-gray-900">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-3 dark:text-white">AluraPlus: pequeno site com informações de combos da Alura!</h3>
-            <Image
-              src="/projeto-aluraplus.jpg"
-              alt="Miniatura do Projeto AluraPlus"
-              width={400}
-              height={250}
-              className="rounded-md mb-4 object-cover"
-            />
-            <p className="text-gray-600 flex-grow mb-4 dark:text-gray-400">
-              O AluraPlus é um projeto desenvolvido que foi utilizado HTML e CSS. Ele apresenta informações sobre os combos da Alura, organizando detalhes de planos e benefícios de forma visualmente atraente.
-            </p>
-            <div className="mt-auto flex justify-between items-center">
-              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">HTML, CSS</span>
-              <a
-                href="https://vinizinhoo.github.io/alura-plus/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 transition duration-300 font-semibold dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                Ver Projeto &rarr;
-              </a>
-            </div>
           </div>
-
         </div>
       </section>
 
-      {/* 4. SEÇÃO DE CONTATO (COM BOTÕES DE AÇÃO) */}
-      <section id="contato" className="w-full max-w-4xl mx-auto py-16 px-4 md:px-8 bg-white shadow-md rounded-lg mb-12 text-center dark:bg-gray-800 dark:shadow-xl">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4 dark:text-white">Vamos Conversar?</h2>
-        <p className="text-xl text-gray-700 max-w-2xl mx-auto mb-10 dark:text-gray-400">
-          Estou sempre aberto a novas oportunidades e colaborações. Sinta-se à vontade para entrar em contato.
-        </p>
+      {/* --- PROJETOS (Gerado dinamicamente via Map) --- */}
+      <section id="projetos" className="py-20 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="text-4xl font-bold text-center mb-16 dark:text-white">Projetos em Destaque</h2>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((proj, index) => (
+              <div 
+                key={index} 
+                className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 dark:bg-gray-800"
+              >
+                {/* Imagem com Overlay ao passar o mouse */}
+                <div className="relative h-48 overflow-hidden">
+                   {/* Fallback de imagem se não tiver arquivo real ainda */}
+                   <div className="absolute inset-0 bg-gray-200 animate-pulse" /> 
+                   <Image 
+                     src={proj.img} 
+                     alt={proj.title}
+                     fill
+                     className="object-cover group-hover:scale-110 transition duration-500"
+                   />
+                </div>
+                
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2 dark:text-white">{proj.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4 dark:text-gray-400">{proj.desc}</p>
+                  
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {proj.tags.map(tag => (
+                      <span key={tag} className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded dark:bg-blue-900/30 dark:text-blue-300">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
-        {/* Container para os Botões */}
-        <div className="flex justify-center space-x-6">
-
-          {/* Botão do Instagram */}
-          <a
-            href="https://www.instagram.com/brndx.vinii/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center bg-pink-600 text-white font-semibold py-3 px-6 rounded-full 
-              hover:bg-pink-700 transition duration-300 shadow-md
-                  relative z-10"
-          >
-            {/* Ícone do Instagram (SVG) */}
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-            </svg>
-            Instagram
-          </a>
-
-          {/* Botão do LinkedIn */}
-          <a
-            href="https://www.linkedin.com/in/vin%C3%ADcius-brand%C3%A3o-ambrosio-1b25b4257"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center bg-blue-600 text-white font-semibold py-3 px-6 rounded-full 
-             hover:bg-blue-700 transition duration-300 shadow-md 
-            relative z-10"
-          >
-            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.444-2.136 2.939v5.667H9.27V9.75H12.9v1.648h.049c.519-.976 1.795-2.018 3.48-.992 3.626 0 4.286 2.684 4.286 6.157v6.78H20.447zM7.135 7.037c-1.336 0-2.19-.895-2.19-2.004 0-1.111.854-2.004 2.19-2.004 1.336 0 2.19.893 2.19 2.004 0 1.109-.854 2.004-2.19 2.004zM3.434 9.75H7.2V20.452H3.434V9.75z" /></svg>
-            LinkedIn
-          </a>
-
+                  <a 
+                    href={proj.link} 
+                    target="_blank"
+                    className="block w-full text-center py-2 border border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-600 hover:text-white transition dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-500 dark:hover:text-white"
+                  >
+                    Ver Projeto
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Footer - ESTAVA FORA DO MAIN */}
-      <footer className="bg-gray-800 text-white py-8 text-center text-sm dark:bg-gray-950 dark:border-t dark:border-gray-700">
-        <p>&copy; {new Date().getFullYear()} Vinícius Brandão Ambrosio. Todos os direitos reservados.</p>
-        <p className="mt-2">Feito com ❤️ e Next.js</p>
+      {/* --- FOOTER SIMPLIFICADO --- */}
+      <footer className="bg-gray-900 text-gray-400 py-12 text-center">
+        <p className="mb-4 text-lg text-white font-semibold">Vamos construir algo juntos?</p>
+        <div className="flex justify-center gap-6 mb-8">
+          <a href="https://linkedin.com" className="hover:text-white transition">LinkedIn</a>
+          <a href="https://instagram.com" className="hover:text-white transition">Instagram</a>
+          <a href="mailto:vnbrandaoambrosio@gmail.com" className="hover:text-white transition">Email</a>
+        </div>
+        <p className="text-sm">© {new Date().getFullYear()} Vinícius Brandão. Desenvolvido com Next.js & Tailwind.</p>
       </footer>
 
     </main>

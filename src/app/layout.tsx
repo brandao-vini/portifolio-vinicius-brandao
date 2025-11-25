@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+// 1. Importe o ThemeProvider que criamos
+import { ThemeProvider } from "@/components/ThemeProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Meu Portifólio",
-  description: "Criado com expo.",
+  title: "Portfólio Vinícius Brandão",
+  description: "Desenvolvedor Web & Mobile",
 };
 
 export default function RootLayout({
@@ -23,11 +17,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    // 2. Adicione 'suppressHydrationWarning' no html para evitar erro de mismatch
+    <html lang="pt-br" suppressHydrationWarning>
+      <body className={inter.className}>
+        {/* 3. Envolva o children com o ThemeProvider */}
+        {/* attribute="class" é OBRIGATÓRIO para funcionar com Tailwind (dark:bg-...) */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
